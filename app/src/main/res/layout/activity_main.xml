@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:paddingHorizontal="30dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:layout_marginTop="8dp"
+        android:id="@+id/txtArash"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:text="Arash Altafi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <ImageView
+        android:layout_marginTop="8dp"
+        android:id="@+id/imgArash"
+        android:layout_below="@+id/txtArash"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/arash"
+        android:layout_width="56dp"
+        android:layout_height="56dp"/>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_share_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="share text" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_share_image_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="share image with text" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_open_url"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="open url" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_open_call"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="open call" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_open_sms"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="open sms" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_open_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="open email" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_open_app_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="open app info" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_open_map"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="open map" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_open_google_map"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="open google map" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</RelativeLayout>
