@@ -42,6 +42,10 @@ class MainActivity : AppCompatActivity() {
             openURL("https://arashaltafi.ir/")
         }
 
+        btnOpenInternalUrl.setOnClickListener {
+            openInternalURL("https://arashaltafi.ir/")
+        }
+
         btnOpenUrlCustom.setOnClickListener {
             openDownloadURL("https://arashaltafi.ir/")
         }

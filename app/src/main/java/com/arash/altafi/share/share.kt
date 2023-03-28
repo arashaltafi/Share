@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.os.StrictMode
 import android.provider.Settings
 import android.util.Log
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import java.io.File
@@ -33,6 +34,12 @@ fun Context.openURL(url: String) {
     } catch (e: ActivityNotFoundException) {
         Log.i("test123321", "action_view_browser_not_found")
     }
+}
+
+fun Context.openInternalURL(url: String) {
+    val builder = CustomTabsIntent.Builder()
+    val customTabsIntent: CustomTabsIntent = builder.build()
+    customTabsIntent.launchUrl(this, Uri.parse(url))
 }
 
 fun Context.openDownloadURL(url: String) {
