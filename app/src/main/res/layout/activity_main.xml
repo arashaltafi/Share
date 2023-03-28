@@ -1,93 +1,145 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    android:paddingHorizontal="30dp"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:orientation="vertical">
 
-    <TextView
-        android:layout_marginTop="8dp"
-        android:id="@+id/txtArash"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentTop="true"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        android:text="Arash Altafi"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <ImageView
-        android:layout_marginTop="8dp"
-        android:id="@+id/imgArash"
-        android:layout_below="@+id/txtArash"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/arash"
-        android:layout_width="56dp"
-        android:layout_height="56dp"/>
-
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerInParent="true"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_share_text"
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="share text" />
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="30dp">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_share_image_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="share image with text" />
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/txtArash"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="Arash Altafi"
+                android:textSize="16sp" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_open_url"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="open url" />
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/imgArash"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/arash" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_open_call"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="open call" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_share_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="share text" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_open_sms"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="open sms" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_share_image_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="share image with text" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_open_email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="open email" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_open_url"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="open url" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_open_app_info"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="open app info" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_open_url_custom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="open url Custom" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_open_map"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="open map" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_open_call"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="open call" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_open_google_map"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="open google map" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_open_sms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="open sms" />
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_open_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="open email" />
 
-</RelativeLayout>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_open_app_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="open app info" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_open_map"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="open map" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_open_google_map"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="open google map" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_open_google_map_navigation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="open google map navigation" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_open_neshan_navigation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="open neshan navigation" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_choose_navigation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="open choose navigation" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_open_developer_option"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="open developer option" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_restart_app"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="restart app" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

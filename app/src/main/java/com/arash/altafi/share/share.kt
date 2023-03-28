@@ -1,13 +1,14 @@
 package com.arash.altafi.share
 
-import android.content.ActivityNotFoundException
-import android.content.Context
-import android.content.Intent
+import android.app.Activity
+import android.content.*
 import android.content.pm.ApplicationInfo
+import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
+import android.os.Bundle
 import android.os.StrictMode
 import android.provider.Settings
 import android.util.Log
@@ -15,6 +16,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import java.io.File
 import java.io.FileOutputStream
+
 
 fun Context.openAppInfoSetting() {
     //redirect user to app Settings
@@ -30,6 +32,28 @@ fun Context.openURL(url: String) {
         startActivity(intent)
     } catch (e: ActivityNotFoundException) {
         Log.i("test123321", "action_view_browser_not_found")
+    }
+}
+
+fun Context.openDownloadURL(url: String) {
+    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    when {
+        this.isInstalled("com.android.chrome") -> intent.setPackage("com.android.chrome")
+        this.isInstalled("org.mozilla.firefox") -> intent.setPackage("org.mozilla.firefox")
+        this.isInstalled("com.opera.mini.android") -> intent.setPackage("com.opera.mini.android")
+        this.isInstalled("com.opera.mini.android.Browser") -> intent.setPackage("com.opera.mini.android.Browser")
+        else -> this.openURL(url)
+    }
+    startActivity(intent)
+}
+
+private fun Context.isInstalled(packageName: String): Boolean {
+    return try {
+        this.packageManager.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES)
+        true
+    } catch (e: PackageManager.NameNotFoundException) {
+        false
     }
 }
 
@@ -136,4 +160,68 @@ fun Context.openGoogleMap(lat: String, lng: String) {
 fun Context.isDarkTheme(): Boolean {
     return resources.configuration.uiMode and
             Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
+}
+
+fun Context.copyToClipboard(text: String) {
+    val myClipboard: ClipboardManager? =
+        ContextCompat.getSystemService(this, ClipboardManager::class.java)
+
+    val myClip = ClipData.newPlainText("copied:", text)
+    myClipboard!!.setPrimaryClip(myClip)
+}
+
+fun Context.openGoogleMapNavigation(markerLatitude: String, markerLongitude: String) =
+    startActivity(
+        Intent(
+            Intent.ACTION_VIEW,
+            Uri.parse("https://www.google.com/maps/dir/?api=1&destination=$markerLatitude,$markerLongitude&travelmode=driving")
+        )
+    )
+
+fun Context.openNeshanNavigation(markerLatitude: String, markerLongitude: String) =
+    startActivity(
+        Intent(
+            Intent.ACTION_VIEW,
+            Uri.parse("nshn:$markerLatitude,$markerLongitude")
+        )
+    )
+
+fun Context.openChooseNavigation(markerLatitude: String, markerLongitude: String) =
+    startActivity(
+        Intent(
+            Intent.ACTION_VIEW,
+            Uri.parse("geo: $markerLatitude,$markerLongitude")
+        )
+    )
+
+fun Context.openDeveloperOption() {
+    startActivity(Intent(Settings.ACTION_APPLICATION_DEVELOPMENT_SETTINGS))
+}
+
+/**
+ * @param launcher: usually start activity
+ */
+fun <T> Activity.restartApp(launcher: Class<T>, bundle: Bundle? = null) {
+    Intent(this, launcher).apply {
+        bundle?.let {
+            putExtras(it)
+        }
+        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(this)
+    }
+
+    finish()
+    Runtime.getRuntime().exit(0)
+}
+
+fun Context.openFile(uri: Uri?, fileMimType: String?) {
+    try {
+        val intent = Intent()
+        intent.action = Intent.ACTION_VIEW
+        intent.setDataAndType(uri, fileMimType)
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        startActivity(intent)
+    } catch (e: Exception) {
+        Log.e("uiTest OpenFile", "openFile: $e.message")
+    }
 }
