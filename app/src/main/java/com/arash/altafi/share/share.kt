@@ -48,6 +48,18 @@ fun Context.openDownloadURL(url: String) {
     startActivity(intent)
 }
 
+fun Context.openApplication(packageName: String, isInstalled: ((Boolean)-> Unit)) {
+    try {
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        intent.setPackage(packageName)
+        startActivity(intent)
+        isInstalled.invoke(true)
+    } catch(e: Exception) {
+        isInstalled.invoke(false)
+    }
+}
+
 private fun Context.isInstalled(packageName: String): Boolean {
     return try {
         this.packageManager.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES)

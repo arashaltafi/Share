@@ -2,6 +2,7 @@ package com.arash.altafi.share
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.core.graphics.drawable.toBitmap
 import com.arash.altafi.share.databinding.ActivityMainBinding
 
@@ -93,6 +94,18 @@ class MainActivity : AppCompatActivity() {
 
         btnRestartApp.setOnClickListener {
             restartApp(MainActivity::class.java)
+        }
+
+        btnOpenAppInstagram.setOnClickListener {
+            openApplication("com.instagram.android") {
+                if (it.not()) {
+                    Toast.makeText(
+                        this@MainActivity,
+                        "Instagram not installed",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
         }
 
     }

@@ -138,6 +138,13 @@
                 android:layout_marginTop="16dp"
                 android:text="restart app" />
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_open_app_instagram"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="open app instagram" />
+
         </androidx.appcompat.widget.LinearLayoutCompat>
 
     </androidx.core.widget.NestedScrollView>
