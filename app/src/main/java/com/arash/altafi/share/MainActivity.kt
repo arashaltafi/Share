@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.core.graphics.drawable.toBitmap
 import com.arash.altafi.share.databinding.ActivityMainBinding
+import com.arash.altafi.share.utils.toGone
+import com.arash.altafi.share.utils.toShow
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,12 +22,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun init() = binding.apply {
-        txtArash.setOnClickListener {
-            copyToClipboard(txtArash.text.toString())
+        txtCopyClipBoard.setOnClickListener {
+            copyToClipboard(txtCopyClipBoard.text.toString())
         }
 
         btnShareText.setOnClickListener {
-            share(txtArash.text.toString())
+            share(txtCopyClipBoard.text.toString())
         }
 
         btnShareImageText.setOnClickListener {
@@ -36,6 +38,22 @@ class MainActivity : AppCompatActivity() {
                 "text title",
                 "text subject"
             )
+        }
+
+        btnShareImage.setOnClickListener {
+            progressBar.toShow()
+            getBitmap(url = "https://arashaltafi.ir/arash.jpg", result = { bitmap ->
+                progressBar.toGone()
+                shareImage(applicationInfo.packageName, bitmap)
+            })
+        }
+
+        btnShareVideo.setOnClickListener {
+
+        }
+
+        btnShareMusic.setOnClickListener {
+
         }
 
         btnOpenUrl.setOnClickListener {

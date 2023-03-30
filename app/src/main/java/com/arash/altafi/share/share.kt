@@ -2,19 +2,24 @@ package com.arash.altafi.share
 
 import android.app.Activity
 import android.content.*
-import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.StrictMode
 import android.provider.Settings
 import android.util.Log
+import androidx.annotation.DrawableRes
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import com.arash.altafi.share.utils.GlideUtils
+import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import java.io.File
 import java.io.FileOutputStream
 
@@ -55,14 +60,14 @@ fun Context.openDownloadURL(url: String) {
     startActivity(intent)
 }
 
-fun Context.openApplication(packageName: String, isInstalled: ((Boolean)-> Unit)) {
+fun Context.openApplication(packageName: String, isInstalled: ((Boolean) -> Unit)) {
     try {
         val intent = Intent(Intent.ACTION_VIEW)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         intent.setPackage(packageName)
         startActivity(intent)
         isInstalled.invoke(true)
-    } catch(e: Exception) {
+    } catch (e: Exception) {
         isInstalled.invoke(false)
     }
 }
@@ -87,7 +92,13 @@ fun Context.share(text: String) {
     startActivity(shareIntent)
 }
 
-fun Context.shareTextWithImage(applicationId: String, bitmap: Bitmap, body: String, title:String, subject: String) {
+fun Context.shareTextWithImage(
+    applicationId: String,
+    bitmap: Bitmap,
+    body: String,
+    title: String,
+    subject: String
+) {
     val file = File(externalCacheDir, System.currentTimeMillis().toString() + ".jpg")
     val out = FileOutputStream(file)
     bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out)
@@ -113,6 +124,32 @@ fun Context.shareTextWithImage(applicationId: String, bitmap: Bitmap, body: Stri
     }
 
     val shareIntent = Intent.createChooser(sendIntent, "Share News")
+    startActivity(shareIntent)
+}
+
+fun Context.shareImage(applicationId: String, bitmap: Bitmap) {
+    val file = File(externalCacheDir, System.currentTimeMillis().toString() + ".jpg")
+    val out = FileOutputStream(file)
+    bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out)
+    out.close()
+    val bmpUri = if (Build.VERSION.SDK_INT < 24) {
+        Uri.fromFile(file)
+    } else {
+        FileProvider.getUriForFile(
+            this, "$applicationId.fileprovider", file
+        )
+    }
+
+    val builder: StrictMode.VmPolicy.Builder = StrictMode.VmPolicy.Builder()
+    StrictMode.setVmPolicy(builder.build())
+
+    val sendIntent = Intent().apply {
+        action = Intent.ACTION_SEND
+        type = "image/*"
+        putExtra(Intent.EXTRA_STREAM, bmpUri)
+    }
+
+    val shareIntent = Intent.createChooser(sendIntent, "Share Image")
     startActivity(shareIntent)
 }
 
@@ -243,4 +280,27 @@ fun Context.openFile(uri: Uri?, fileMimType: String?) {
     } catch (e: Exception) {
         Log.e("uiTest OpenFile", "openFile: $e.message")
     }
+}
+
+fun Context.getBitmap(
+    url: Any,
+    result: ((Bitmap) -> Unit),
+    @DrawableRes placeholderRes: Int? = R.drawable.bit_placeholder_image,
+    @DrawableRes errorRes: Int? = R.drawable.bit_error_image,
+    requestOptions: RequestOptions? = null
+) {
+    GlideUtils(this).getBitmapRequestBuilder(requestOptions)
+        .load(url)
+        .apply {
+            placeholderRes?.let { placeholder(it) }
+            error(errorRes)
+        }
+        .into(object : CustomTarget<Bitmap>() {
+            override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                result.invoke(resource)
+            }
+
+            override fun onLoadCleared(placeholder: Drawable?) {
+            }
+        })
 }
