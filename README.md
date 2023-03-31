@@ -17,3 +17,7 @@ open app info
 open map
 
 open google map
+
+download video, audio, ...
+
+share video, audio, ...
