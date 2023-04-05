@@ -1,7 +1,11 @@
 package com.arash.altafi.share
 
 import android.Manifest
+import android.app.DownloadManager
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -10,10 +14,7 @@ import android.provider.Settings
 import android.widget.Toast
 import androidx.core.graphics.drawable.toBitmap
 import com.arash.altafi.share.databinding.ActivityMainBinding
-import com.arash.altafi.share.utils.PermissionUtils
-import com.arash.altafi.share.utils.loadCompat
-import com.arash.altafi.share.utils.toGone
-import com.arash.altafi.share.utils.toShow
+import com.arash.altafi.share.utils.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,6 +31,8 @@ class MainActivity : AppCompatActivity() {
         "https://arashaltafi.ir/url_sample/mp3.mp3",
         "https://arashaltafi.ir/url_sample/zip.zip",
     )
+
+    private val receiver = DownloadCompleteReceiver()
 
     private val registerStorageResult = PermissionUtils.register(
         this,
@@ -79,6 +82,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        registerReceiver(
+            broadcastReceiverDownload, IntentFilter(Constants.DOWNLOAD_FAILED)
+        )
+        registerReceiver(
+            broadcastReceiverDownload, IntentFilter(Constants.DOWNLOAD_COMPLETE)
+        )
+        registerReceiver(
+            receiver, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE)
+        )
         init()
     }
 
@@ -258,6 +270,10 @@ class MainActivity : AppCompatActivity() {
             })
         }
 
+        btnInstallApk.setOnClickListener {
+            downloadAndInstallApk(link = Constants.DOWNLOAD_APK_URL)
+        }
+
         btnOpenUrl.setOnClickListener {
             openURL("https://arashaltafi.ir/")
         }
@@ -333,6 +349,19 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private val broadcastReceiverDownload: BroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            when (intent?.action) {
+                Constants.DOWNLOAD_COMPLETE -> {
+                    installApk(BuildConfig.APPLICATION_ID)
+                }
+                Constants.DOWNLOAD_FAILED -> {
+                    openURL(Constants.DOWNLOAD_APK_URL)
+                }
+            }
+        }
+    }
+
     private fun intentToSetting() {
         startActivity(
             Intent(
@@ -340,6 +369,12 @@ class MainActivity : AppCompatActivity() {
                 Uri.fromParts("package", packageName, null)
             )
         )
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterReceiver(broadcastReceiverDownload)
+        unregisterReceiver(receiver)
     }
 
 }

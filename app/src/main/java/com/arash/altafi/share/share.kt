@@ -24,6 +24,7 @@ import androidx.annotation.DrawableRes
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import com.arash.altafi.share.utils.Constants
 import com.arash.altafi.share.utils.GlideUtils
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget
@@ -643,6 +644,46 @@ private fun getFileTypeFromUri(context: Context, uri: Uri): String? {
     }
     return type
 }
+//endregion
+
+//region install apk
+fun Context.downloadAndInstallApk(title: String = "", description: String = "", link: String) {
+    try {
+        val getTitle = title.ifEmpty { getString(R.string.app_name) }
+        val getDescription = description.ifEmpty { getString(R.string.app_name) }
+        val downloadManager = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+        val request = DownloadManager.Request(Uri.parse(link))
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+        request.setTitle(getTitle)
+        request.setDescription(getDescription)
+
+        val file = File(externalCacheDir, Constants.APP_NAME)
+
+        if (file.exists()) {
+            file.delete()
+        }
+
+        request.setDestinationUri(Uri.fromFile(File(externalCacheDir, Constants.APP_NAME)))
+        downloadManager.enqueue(request)
+    } catch (e: Exception) {
+        Log.e("test123321", "downloadAndInstallApk: ${e.message}")
+    }
+}
+
+fun Activity.installApk(applicationId: String) {
+    val file = File(externalCacheDir, Constants.APP_NAME)
+    val apkUri = FileProvider.getUriForFile(this, "$applicationId.fileprovider", file)
+    val installIntent = Intent(Intent.ACTION_VIEW)
+    installIntent.setDataAndType(apkUri, "application/vnd.android.package-archive")
+    installIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+    installIntent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+    try {
+        startActivity(installIntent)
+    } catch (e: Exception) {
+        Log.e("test123321", "install: ${e.message}")
+    }
+}
+
 //endregion
 
 //region save bitmap

@@ -248,6 +248,13 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <!-- install -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_install_apk"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="48dp"
+                android:text="install apk" />
 
             <!-- open -->
             <com.google.android.material.button.MaterialButton
