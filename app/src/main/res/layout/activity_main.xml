@@ -249,12 +249,34 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <!-- install -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_install_apk"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="48dp"
-                android:text="install apk" />
+                android:layout_gravity="center"
+                android:layout_marginTop="48dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_install_apk"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="install apk"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintWidth_percent="0.8" />
+
+                <ProgressBar
+                    android:id="@+id/progressInstallApk"
+                    android:layout_width="0dp"
+                    android:layout_height="32dp"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintWidth_percent="0.2"
+                    tools:visibility="visible" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <!-- open -->
             <com.google.android.material.button.MaterialButton

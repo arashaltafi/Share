@@ -12,6 +12,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.core.graphics.drawable.toBitmap
 import com.arash.altafi.share.databinding.ActivityMainBinding
 import com.arash.altafi.share.utils.*
@@ -33,6 +35,18 @@ class MainActivity : AppCompatActivity() {
     )
 
     private val receiver = DownloadCompleteReceiver()
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private val requestInstallUnknownAppLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            val unknownAppPermissionGranted = packageManager.canRequestPackageInstalls()
+            if (unknownAppPermissionGranted) {
+                downloadAndInstallApk(link = Constants.DOWNLOAD_APK_URL)
+                binding.progressInstallApk.toShow()
+            } else {
+                binding.progressInstallApk.toGone()
+            }
+        }
 
     private val registerStorageResult = PermissionUtils.register(
         this,
@@ -271,7 +285,19 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnInstallApk.setOnClickListener {
-            downloadAndInstallApk(link = Constants.DOWNLOAD_APK_URL)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                if (packageManager.canRequestPackageInstalls()) {
+                    downloadAndInstallApk(link = Constants.DOWNLOAD_APK_URL)
+                    binding.progressInstallApk.toShow()
+                } else {
+                    val packageURI = Uri.parse("package:$packageName")
+                    val intent = Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES, packageURI)
+                    requestInstallUnknownAppLauncher.launch(intent)
+                }
+            } else {
+                downloadAndInstallApk(link = Constants.DOWNLOAD_APK_URL)
+                binding.progressInstallApk.toShow()
+            }
         }
 
         btnOpenUrl.setOnClickListener {
@@ -353,9 +379,11 @@ class MainActivity : AppCompatActivity() {
         override fun onReceive(context: Context?, intent: Intent?) {
             when (intent?.action) {
                 Constants.DOWNLOAD_COMPLETE -> {
+                    binding.progressInstallApk.toGone()
                     installApk(BuildConfig.APPLICATION_ID)
                 }
                 Constants.DOWNLOAD_FAILED -> {
+                    binding.progressInstallApk.toGone()
                     openURL(Constants.DOWNLOAD_APK_URL)
                 }
             }
